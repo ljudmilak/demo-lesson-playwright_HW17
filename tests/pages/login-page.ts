@@ -1,8 +1,8 @@
 import { expect, Locator, Page } from '@playwright/test'
 import { OrderPage } from './order-page'
 import { SERVICE_URL } from '../../config/env-data'
-import { BasePage} from './base-page'
-import { Button} from '../atoms/Button'
+import { BasePage } from './base-page'
+import { Button } from '../atoms/Button'
 
 export class LoginPage extends BasePage {
   private readonly url: string = SERVICE_URL
