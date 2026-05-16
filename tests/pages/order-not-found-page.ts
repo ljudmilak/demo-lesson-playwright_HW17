@@ -1,11 +1,11 @@
 import { expect, Locator, Page } from '@playwright/test'
-import { AuthorizedPage } from './authorized-page'
+import { BasePage } from './base-page'
 
-export class NotFoundPage extends AuthorizedPage {
+export class NotFoundPage extends BasePage {
   readonly container: Locator
 
   constructor(page: Page) {
-    super(page)
+    super(page, '')
     this.container = this.page.getByTestId('orderNotFound-container')
   }
 
