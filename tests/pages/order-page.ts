@@ -1,17 +1,20 @@
 import { expect, Locator, Page } from '@playwright/test'
 import { faker } from '@faker-js/faker'
-import { AuthorizedPage } from './authorized-page'
+import { BasePage } from './base-page'
 import { Button } from '../atoms/Button'
 import { NotFoundPage } from './order-not-found-page'
 import { OrderDetailsPage } from './order-details-page'
+import { SERVICE_URL } from '../../config/env-data'
 
-export class OrderPage extends AuthorizedPage {
+export class OrderPage extends BasePage {
   readonly title: Locator
+  readonly statusButton: Button
   readonly createOrderButton: Button
   readonly nameInput: Locator
   readonly phoneInput: Locator
   readonly commentInput: Locator
   readonly confirmationPopup: Locator
+  readonly logoutButton: Button
 
   // search popup
   protected readonly searchPopup: Locator
@@ -19,13 +22,15 @@ export class OrderPage extends AuthorizedPage {
   readonly searchButton: Button
 
   constructor(page: Page) {
-    super(page)
+    super(page, SERVICE_URL)
     this.title = page.locator('h2')
+    this.statusButton = new Button(page.getByTestId('openStatusPopup-button'))
     this.createOrderButton = new Button(page.getByTestId('createOrder-button'))
     this.nameInput = page.getByTestId('username-input')
     this.phoneInput = page.getByTestId('phone-input')
     this.commentInput = page.getByTestId('comment-input')
     this.confirmationPopup = page.getByTestId('orderSuccessfullyCreated-popup')
+    this.logoutButton = new Button(page.getByTestId('logout-button'))
 
     // search popup
     this.searchPopup = page.getByTestId('searchOrder-popup')
@@ -63,4 +68,17 @@ export class OrderPage extends AuthorizedPage {
     await this.searchButton.click()
     return new OrderDetailsPage(this.page)
   }
+
+  async checkSuccessfullyCreatedPopup(visible = true): Promise<void> {
+    await expect(this.confirmationPopup).toBeVisible({ visible })
+  }
 }
+
+/*
+// test
+  async ordersMocksFallbackExample(): Promise<void> {
+    await this.page.route(`**${ENDPOINTS.ORDERS}/*`, async (route) => {
+      console.log(2)
+    })
+  }
+ */

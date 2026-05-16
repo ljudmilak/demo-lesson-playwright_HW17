@@ -1,11 +1,11 @@
-import { AuthorizedPage } from './authorized-page'
+import { BasePage } from './base-page'
 import { expect, Locator, Page } from '@playwright/test'
 
-export class OrderDetailsPage extends AuthorizedPage {
+export class OrderDetailsPage extends BasePage {
   readonly details: Locator
 
   constructor(page: Page) {
-    super(page)
+    super(page, '')
     this.details = this.page.locator('.order-details')
   }
 
